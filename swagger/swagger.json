@@ -11,7 +11,7 @@
       "description": "Local server"
     },
     {
-      "url": "https://your-render-url.onrender.com",
+      "url": "https://cse-341-crudoperations.onrender.com/",
       "description": "Render deployment"
     }
   ],
