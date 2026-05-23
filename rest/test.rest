@@ -1,0 +1,139 @@
+### BASE URL
+@baseUrl = http://localhost:8080
+
+############################################################
+# 🐾 PETS
+############################################################
+
+### Get all pets
+GET {{baseUrl}}/pets
+
+### Get one pet by ID
+GET {{baseUrl}}/pets/{{petId}}
+
+### Create a new pet
+POST {{baseUrl}}/pets
+Content-Type: application/json
+
+{
+  "name": "Buddy",
+  "type": "Dog",
+  "age": 4,
+  "ownerId": "12345"
+}
+
+### Update a pet
+PUT {{baseUrl}}/pets/{{petId}}
+Content-Type: application/json
+
+{
+  "name": "Buddy Updated",
+  "type": "Dog",
+  "age": 5,
+  "ownerId": "12345"
+}
+
+### Delete a pet
+DELETE {{baseUrl}}/pets/{{petId}}
+
+
+############################################################
+# 👤 OWNERS
+############################################################
+
+### Get all owners
+GET {{baseUrl}}/owners
+
+### Get one owner by ID
+GET {{baseUrl}}/owners/{{ownerId}}
+
+### Create a new owner
+POST {{baseUrl}}/owners
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "phone": "555-1234",
+  "email": "john@example.com"
+}
+
+### Update an owner
+PUT {{baseUrl}}/owners/{{ownerId}}
+Content-Type: application/json
+
+{
+  "name": "John Doe Updated",
+  "phone": "555-5678",
+  "email": "john@example.com"
+}
+
+### Delete an owner
+DELETE {{baseUrl}}/owners/{{ownerId}}
+
+
+############################################################
+# 🥕 VEGGIES
+############################################################
+
+### Get all veggies
+GET {{baseUrl}}/veggies
+
+### Get one veggie by ID
+GET {{baseUrl}}/veggies/{{veggieId}}
+
+### Create a new veggie
+POST {{baseUrl}}/veggies
+Content-Type: application/json
+
+{
+  "name": "Carrot",
+  "color": "Orange",
+  "isRoot": true
+}
+
+### Update a veggie
+PUT {{baseUrl}}/veggies/{{veggieId}}
+Content-Type: application/json
+
+{
+  "name": "Carrot Updated",
+  "color": "Orange",
+  "isRoot": true
+}
+
+### Delete a veggie
+DELETE {{baseUrl}}/veggies/{{veggieId}}
+
+
+############################################################
+# 🍎 FRUITS
+############################################################
+
+### Get all fruits
+GET {{baseUrl}}/fruits
+
+### Get one fruit by ID
+GET {{baseUrl}}/fruits/{{fruitId}}
+
+### Create a new fruit
+POST {{baseUrl}}/fruits
+Content-Type: application/json
+
+{
+  "name": "Apple",
+  "color": "Red",
+  "sweetness": 8
+}
+
+### Update a fruit
+PUT {{baseUrl}}/fruits/{{fruitId}}
+Content-Type: application/json
+
+{
+  "name": "Apple Updated",
+  "color": "Red",
+  "sweetness": 9
+}
+
+### Delete a fruit
+DELETE {{baseUrl}}/fruits/{{fruitId}}

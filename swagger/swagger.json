@@ -1,0 +1,333 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "CrudOperations API",
+    "version": "1.0.0",
+    "description": "API documentation for Pets, Owners, Veggies, and Fruits CRUD operations."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Local server"
+    },
+    {
+      "url": "https://your-render-url.onrender.com",
+      "description": "Render deployment"
+    }
+  ],
+  "paths": {
+    "/pets": {
+      "get": {
+        "tags": ["Pets"],
+        "summary": "Get all pets",
+        "responses": {
+          "200": { "description": "List of pets" }
+        }
+      },
+      "post": {
+        "tags": ["Pets"],
+        "summary": "Create a new pet",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Pet" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Pet created" },
+          "400": { "description": "Validation error" }
+        }
+      }
+    },
+    "/pets/{id}": {
+      "get": {
+        "tags": ["Pets"],
+        "summary": "Get a pet by ID",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true }
+        ],
+        "responses": {
+          "200": { "description": "Pet found" },
+          "404": { "description": "Pet not found" }
+        }
+      },
+      "put": {
+        "tags": ["Pets"],
+        "summary": "Update a pet",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Pet" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Pet updated" },
+          "404": { "description": "Pet not found" }
+        }
+      },
+      "delete": {
+        "tags": ["Pets"],
+        "summary": "Delete a pet",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true }
+        ],
+        "responses": {
+          "200": { "description": "Pet deleted" },
+          "404": { "description": "Pet not found" }
+        }
+      }
+    },
+
+    "/owners": {
+      "get": {
+        "tags": ["Owners"],
+        "summary": "Get all owners",
+        "responses": {
+          "200": { "description": "List of owners" }
+        }
+      },
+      "post": {
+        "tags": ["Owners"],
+        "summary": "Create a new owner",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Owner" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Owner created" },
+          "400": { "description": "Validation error" }
+        }
+      }
+    },
+    "/owners/{id}": {
+      "get": {
+        "tags": ["Owners"],
+        "summary": "Get an owner by ID",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true }
+        ],
+        "responses": {
+          "200": { "description": "Owner found" },
+          "404": { "description": "Owner not found" }
+        }
+      },
+      "put": {
+        "tags": ["Owners"],
+        "summary": "Update an owner",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Owner" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Owner updated" },
+          "404": { "description": "Owner not found" }
+        }
+      },
+      "delete": {
+        "tags": ["Owners"],
+        "summary": "Delete an owner",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true }
+        ],
+        "responses": {
+          "200": { "description": "Owner deleted" },
+          "404": { "description": "Owner not found" }
+        }
+      }
+    },
+
+    "/veggies": {
+      "get": {
+        "tags": ["Veggies"],
+        "summary": "Get all veggies",
+        "responses": {
+          "200": { "description": "List of veggies" }
+        }
+      },
+      "post": {
+        "tags": ["Veggies"],
+        "summary": "Create a new veggie",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Veggie" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Veggie created" },
+          "400": { "description": "Validation error" }
+        }
+      }
+    },
+    "/veggies/{id}": {
+      "get": {
+        "tags": ["Veggies"],
+        "summary": "Get a veggie by ID",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true }
+        ],
+        "responses": {
+          "200": { "description": "Veggie found" },
+          "404": { "description": "Veggie not found" }
+        }
+      },
+      "put": {
+        "tags": ["Veggies"],
+        "summary": "Update a veggie",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Veggie" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Veggie updated" },
+          "404": { "description": "Veggie not found" }
+        }
+      },
+      "delete": {
+        "tags": ["Veggies"],
+        "summary": "Delete a veggie",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true }
+        ],
+        "responses": {
+          "200": { "description": "Veggie deleted" },
+          "404": { "description": "Veggie not found" }
+        }
+      }
+    },
+
+    "/fruits": {
+      "get": {
+        "tags": ["Fruits"],
+        "summary": "Get all fruits",
+        "responses": {
+          "200": { "description": "List of fruits" }
+        }
+      },
+      "post": {
+        "tags": ["Fruits"],
+        "summary": "Create a new fruit",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Fruit" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Fruit created" },
+          "400": { "description": "Validation error" }
+        }
+      }
+    },
+    "/fruits/{id}": {
+      "get": {
+        "tags": ["Fruits"],
+        "summary": "Get a fruit by ID",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true }
+        ],
+        "responses": {
+          "200": { "description": "Fruit found" },
+          "404": { "description": "Fruit not found" }
+        }
+      },
+      "put": {
+        "tags": ["Fruits"],
+        "summary": "Update a fruit",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Fruit" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Fruit updated" },
+          "404": { "description": "Fruit not found" }
+        }
+      },
+      "delete": {
+        "tags": ["Fruits"],
+        "summary": "Delete a fruit",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true }
+        ],
+        "responses": {
+          "200": { "description": "Fruit deleted" },
+          "404": { "description": "Fruit not found" }
+        }
+      }
+    }
+  },
+
+  "components": {
+    "schemas": {
+      "Pet": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "type": { "type": "string" },
+          "age": { "type": "number" },
+          "ownerId": { "type": "string" }
+        }
+      },
+      "Owner": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "phone": { "type": "string" },
+          "email": { "type": "string" }
+        }
+      },
+      "Veggie": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "color": { "type": "string" },
+          "isRoot": { "type": "boolean" }
+        }
+      },
+      "Fruit": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "color": { "type": "string" },
+          "sweetness": { "type": "number" }
+        }
+      }
+    }
+  }
+}
