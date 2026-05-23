@@ -3,6 +3,9 @@ const express = require('express');
 const cors = require('cors');
 const { connectToMongo } = require('./db/connect');
 
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger/swagger.json');
+
 // Route imports
 const petsRoutes = require('./routes/pets');
 const ownersRoutes = require('./routes/owners');
@@ -22,6 +25,7 @@ app.get('/', (req, res) => {
 });
 
 // API Routes
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/pets', petsRoutes);
 app.use('/owners', ownersRoutes);
 app.use('/veggies', veggiesRoutes);
