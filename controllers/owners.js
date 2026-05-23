@@ -1,25 +1,22 @@
-const { ObjectId } = require('mongodb');
-const { getDb } = require('../db/connect');
+const Owner = require('../models/owners');
 
 const ownersController = {
+  // GET all owners
   async getAll(req, res) {
     try {
-      const db = getDb();
-      const owners = await db.collection('owners').find().toArray();
+      const owners = await Owner.find();
       res.status(200).json(owners);
     } catch (err) {
       res.status(500).json({ error: 'Failed to fetch owners' });
     }
   },
 
+  // GET one owner by ID
   async getOne(req, res) {
     try {
       const id = req.params.id;
-      if (!ObjectId.isValid(id)) return res.status(400).json({ error: 'Invalid ID' });
 
-      const db = getDb();
-      const owner = await db.collection('owners').findOne({ _id: new ObjectId(id) });
-
+      const owner = await Owner.findById(id);
       if (!owner) return res.status(404).json({ error: 'Owner not found' });
 
       res.status(200).json(owner);
@@ -28,46 +25,37 @@ const ownersController = {
     }
   },
 
+  // CREATE owner
   async create(req, res) {
     try {
-      const db = getDb();
-      const result = await db.collection('owners').insertOne(req.body);
-      res.status(201).json(result);
+      const owner = await Owner.create(req.body);
+      res.status(201).json(owner);
     } catch (err) {
       res.status(500).json({ error: 'Failed to create owner' });
     }
   },
 
+  // UPDATE owner
   async update(req, res) {
     try {
       const id = req.params.id;
-      if (!ObjectId.isValid(id)) return res.status(400).json({ error: 'Invalid ID' });
 
-      const db = getDb();
-      const result = await db.collection('owners').replaceOne(
-        { _id: new ObjectId(id) },
-        req.body
-      );
+      const updatedOwner = await Owner.findByIdAndUpdate(id, req.body, { new: true });
+      if (!updatedOwner) return res.status(404).json({ error: 'Owner not found' });
 
-      if (result.matchedCount === 0)
-        return res.status(404).json({ error: 'Owner not found' });
-
-      res.status(200).json({ message: 'Owner updated' });
+      res.status(200).json({ message: 'Owner updated', owner: updatedOwner });
     } catch (err) {
       res.status(500).json({ error: 'Failed to update owner' });
     }
   },
 
+  // DELETE owner
   async delete(req, res) {
     try {
       const id = req.params.id;
-      if (!ObjectId.isValid(id)) return res.status(400).json({ error: 'Invalid ID' });
 
-      const db = getDb();
-      const result = await db.collection('owners').deleteOne({ _id: new ObjectId(id) });
-
-      if (result.deletedCount === 0)
-        return res.status(404).json({ error: 'Owner not found' });
+      const deletedOwner = await Owner.findByIdAndDelete(id);
+      if (!deletedOwner) return res.status(404).json({ error: 'Owner not found' });
 
       res.status(200).json({ message: 'Owner deleted' });
     } catch (err) {

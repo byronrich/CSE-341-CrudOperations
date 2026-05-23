@@ -1,25 +1,22 @@
-const { ObjectId } = require('mongodb');
-const { getDb } = require('../db/connect');
+const Fruit = require('../models/fruits');
 
 const fruitsController = {
+  // GET all fruits
   async getAll(req, res) {
     try {
-      const db = getDb();
-      const fruits = await db.collection('fruits').find().toArray();
+      const fruits = await Fruit.find();
       res.status(200).json(fruits);
     } catch (err) {
       res.status(500).json({ error: 'Failed to fetch fruits' });
     }
   },
 
+  // GET one fruit by ID
   async getOne(req, res) {
     try {
       const id = req.params.id;
-      if (!ObjectId.isValid(id)) return res.status(400).json({ error: 'Invalid ID' });
 
-      const db = getDb();
-      const fruit = await db.collection('fruits').findOne({ _id: new ObjectId(id) });
-
+      const fruit = await Fruit.findById(id);
       if (!fruit) return res.status(404).json({ error: 'Fruit not found' });
 
       res.status(200).json(fruit);
@@ -28,46 +25,37 @@ const fruitsController = {
     }
   },
 
+  // CREATE fruit
   async create(req, res) {
     try {
-      const db = getDb();
-      const result = await db.collection('fruits').insertOne(req.body);
-      res.status(201).json(result);
+      const fruit = await Fruit.create(req.body);
+      res.status(201).json(fruit);
     } catch (err) {
       res.status(500).json({ error: 'Failed to create fruit' });
     }
   },
 
+  // UPDATE fruit
   async update(req, res) {
     try {
       const id = req.params.id;
-      if (!ObjectId.isValid(id)) return res.status(400).json({ error: 'Invalid ID' });
 
-      const db = getDb();
-      const result = await db.collection('fruits').replaceOne(
-        { _id: new ObjectId(id) },
-        req.body
-      );
+      const updatedFruit = await Fruit.findByIdAndUpdate(id, req.body, { new: true });
+      if (!updatedFruit) return res.status(404).json({ error: 'Fruit not found' });
 
-      if (result.matchedCount === 0)
-        return res.status(404).json({ error: 'Fruit not found' });
-
-      res.status(200).json({ message: 'Fruit updated' });
+      res.status(200).json({ message: 'Fruit updated', fruit: updatedFruit });
     } catch (err) {
       res.status(500).json({ error: 'Failed to update fruit' });
     }
   },
 
+  // DELETE fruit
   async delete(req, res) {
     try {
       const id = req.params.id;
-      if (!ObjectId.isValid(id)) return res.status(400).json({ error: 'Invalid ID' });
 
-      const db = getDb();
-      const result = await db.collection('fruits').deleteOne({ _id: new ObjectId(id) });
-
-      if (result.deletedCount === 0)
-        return res.status(404).json({ error: 'Fruit not found' });
+      const deletedFruit = await Fruit.findByIdAndDelete(id);
+      if (!deletedFruit) return res.status(404).json({ error: 'Fruit not found' });
 
       res.status(200).json({ message: 'Fruit deleted' });
     } catch (err) {

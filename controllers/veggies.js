@@ -1,25 +1,22 @@
-const { ObjectId } = require('mongodb');
-const { getDb } = require('../db/connect');
+const Veggie = require('../models/veggies');
 
 const veggiesController = {
+  // GET all veggies
   async getAll(req, res) {
     try {
-      const db = getDb();
-      const veggies = await db.collection('veggies').find().toArray();
+      const veggies = await Veggie.find();
       res.status(200).json(veggies);
     } catch (err) {
       res.status(500).json({ error: 'Failed to fetch veggies' });
     }
   },
 
+  // GET one veggie by ID
   async getOne(req, res) {
     try {
       const id = req.params.id;
-      if (!ObjectId.isValid(id)) return res.status(400).json({ error: 'Invalid ID' });
 
-      const db = getDb();
-      const veggie = await db.collection('veggies').findOne({ _id: new ObjectId(id) });
-
+      const veggie = await Veggie.findById(id);
       if (!veggie) return res.status(404).json({ error: 'Veggie not found' });
 
       res.status(200).json(veggie);
@@ -28,46 +25,37 @@ const veggiesController = {
     }
   },
 
+  // CREATE veggie
   async create(req, res) {
     try {
-      const db = getDb();
-      const result = await db.collection('veggies').insertOne(req.body);
-      res.status(201).json(result);
+      const veggie = await Veggie.create(req.body);
+      res.status(201).json(veggie);
     } catch (err) {
       res.status(500).json({ error: 'Failed to create veggie' });
     }
   },
 
+  // UPDATE veggie
   async update(req, res) {
     try {
       const id = req.params.id;
-      if (!ObjectId.isValid(id)) return res.status(400).json({ error: 'Invalid ID' });
 
-      const db = getDb();
-      const result = await db.collection('veggies').replaceOne(
-        { _id: new ObjectId(id) },
-        req.body
-      );
+      const updatedVeggie = await Veggie.findByIdAndUpdate(id, req.body, { new: true });
+      if (!updatedVeggie) return res.status(404).json({ error: 'Veggie not found' });
 
-      if (result.matchedCount === 0)
-        return res.status(404).json({ error: 'Veggie not found' });
-
-      res.status(200).json({ message: 'Veggie updated' });
+      res.status(200).json({ message: 'Veggie updated', veggie: updatedVeggie });
     } catch (err) {
       res.status(500).json({ error: 'Failed to update veggie' });
     }
   },
 
+  // DELETE veggie
   async delete(req, res) {
     try {
       const id = req.params.id;
-      if (!ObjectId.isValid(id)) return res.status(400).json({ error: 'Invalid ID' });
 
-      const db = getDb();
-      const result = await db.collection('veggies').deleteOne({ _id: new ObjectId(id) });
-
-      if (result.deletedCount === 0)
-        return res.status(404).json({ error: 'Veggie not found' });
+      const deletedVeggie = await Veggie.findByIdAndDelete(id);
+      if (!deletedVeggie) return res.status(404).json({ error: 'Veggie not found' });
 
       res.status(200).json({ message: 'Veggie deleted' });
     } catch (err) {

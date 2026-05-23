@@ -1,25 +1,22 @@
-const { ObjectId } = require('mongodb');
-const { getDb } = require('../db/connect');
+const Pet = require('../models/pets');
 
 const petsController = {
+  // GET all pets
   async getAll(req, res) {
     try {
-      const db = getDb();
-      const pets = await db.collection('pets').find().toArray();
+      const pets = await Pet.find();
       res.status(200).json(pets);
     } catch (err) {
       res.status(500).json({ error: 'Failed to fetch pets' });
     }
   },
 
+  // GET one pet by ID
   async getOne(req, res) {
     try {
       const id = req.params.id;
-      if (!ObjectId.isValid(id)) return res.status(400).json({ error: 'Invalid ID' });
 
-      const db = getDb();
-      const pet = await db.collection('pets').findOne({ _id: new ObjectId(id) });
-
+      const pet = await Pet.findById(id);
       if (!pet) return res.status(404).json({ error: 'Pet not found' });
 
       res.status(200).json(pet);
@@ -28,46 +25,37 @@ const petsController = {
     }
   },
 
+  // CREATE a new pet
   async create(req, res) {
     try {
-      const db = getDb();
-      const result = await db.collection('pets').insertOne(req.body);
-      res.status(201).json(result);
+      const pet = await Pet.create(req.body);
+      res.status(201).json(pet);
     } catch (err) {
       res.status(500).json({ error: 'Failed to create pet' });
     }
   },
 
+  // UPDATE a pet
   async update(req, res) {
     try {
       const id = req.params.id;
-      if (!ObjectId.isValid(id)) return res.status(400).json({ error: 'Invalid ID' });
 
-      const db = getDb();
-      const result = await db.collection('pets').replaceOne(
-        { _id: new ObjectId(id) },
-        req.body
-      );
+      const updatedPet = await Pet.findByIdAndUpdate(id, req.body, { new: true });
+      if (!updatedPet) return res.status(404).json({ error: 'Pet not found' });
 
-      if (result.matchedCount === 0)
-        return res.status(404).json({ error: 'Pet not found' });
-
-      res.status(200).json({ message: 'Pet updated' });
+      res.status(200).json({ message: 'Pet updated', pet: updatedPet });
     } catch (err) {
       res.status(500).json({ error: 'Failed to update pet' });
     }
   },
 
+  // DELETE a pet
   async delete(req, res) {
     try {
       const id = req.params.id;
-      if (!ObjectId.isValid(id)) return res.status(400).json({ error: 'Invalid ID' });
 
-      const db = getDb();
-      const result = await db.collection('pets').deleteOne({ _id: new ObjectId(id) });
-
-      if (result.deletedCount === 0)
-        return res.status(404).json({ error: 'Pet not found' });
+      const deletedPet = await Pet.findByIdAndDelete(id);
+      if (!deletedPet) return res.status(404).json({ error: 'Pet not found' });
 
       res.status(200).json({ message: 'Pet deleted' });
     } catch (err) {
