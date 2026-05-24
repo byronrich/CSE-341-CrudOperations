@@ -24,8 +24,10 @@ app.get('/', (req, res) => {
   res.send('CrudOperations API is running');
 });
 
-// API Routes
+// Swagger route
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+// API Routes
 app.use('/pets', petsRoutes);
 app.use('/owners', ownersRoutes);
 app.use('/veggies', veggiesRoutes);
