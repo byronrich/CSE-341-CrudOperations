@@ -7,4 +7,4 @@ const veggieSchema = new mongoose.Schema({
   calories: { type: Number }
 });
 
-module.exports = mongoose.model('Veggie', veggieSchema);
+module.exports = mongoose.model('Veggies', veggieSchema);

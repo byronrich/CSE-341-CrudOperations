@@ -7,4 +7,4 @@ const fruitSchema = new mongoose.Schema({
   seeds: { type: Boolean, default: false }
 });
 
-module.exports = mongoose.model('Fruit', fruitSchema);
+module.exports = mongoose.model('Fruits', fruitSchema);
