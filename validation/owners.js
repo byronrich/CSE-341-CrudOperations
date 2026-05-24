@@ -3,7 +3,8 @@ const Joi = require('joi');
 const ownerSchema = Joi.object({
   name: Joi.string().min(2).required(),
   phone: Joi.string().min(7).required(),
-  email: Joi.string().email().required()
+  email: Joi.string().email().required(),
+  address: Joi.string().optional()
 });
 
 function validateOwner(req, res, next) {

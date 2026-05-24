@@ -3,7 +3,8 @@ const Joi = require('joi');
 const fruitSchema = Joi.object({
   name: Joi.string().min(2).required(),
   color: Joi.string().min(3).required(),
-  sweetness: Joi.number().min(1).max(10).required()
+  sweetness: Joi.number().min(1).max(10).required(),
+  seeds: Joi.boolean().optional()
 });
 
 function validateFruit(req, res, next) {

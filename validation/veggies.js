@@ -3,7 +3,8 @@ const Joi = require('joi');
 const veggieSchema = Joi.object({
   name: Joi.string().min(2).required(),
   color: Joi.string().min(3).required(),
-  isRoot: Joi.boolean().required()
+  isRoot: Joi.boolean().required(),
+  calories: Joi.number().optional()
 });
 
 function validateVeggie(req, res, next) {
