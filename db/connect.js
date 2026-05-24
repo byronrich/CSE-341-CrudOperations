@@ -8,11 +8,10 @@ async function connectToMongo() {
   try {
     await client.connect();
 
-    // Explicitly select the database from your connection string
-    const dbName = process.env.MONGO_URI.split('/').pop();
-    db = client.db(dbName);
+    // Explicitly select the correct database from your cluster
+    db = client.db('cse341');
 
-    console.log(`Connected to MongoDB database: ${dbName}`);
+    console.log('Connected to MongoDB database: cse341');
   } catch (err) {
     console.error('MongoDB connection error:', err);
     throw err;
