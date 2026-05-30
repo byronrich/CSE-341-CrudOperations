@@ -16,7 +16,7 @@ router.post('/register', async (req, res) => {
   const existing = await users.findByEmail(email);
   if (existing) return res.status(400).json({ error: 'User already exists' });
 
-  await users.create(email, password);
+  await users.createUser(email, password);
   res.status(201).json({ message: 'User registered successfully' });
 });
 
@@ -32,11 +32,12 @@ router.post('/login', async (req, res) => {
   const valid = await bcrypt.compare(password, user.password);
   if (!valid) return res.status(401).json({ error: 'Invalid credentials' });
 
-  const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET, {
-    expiresIn: '1h',
-  });
+  const token = jwt.sign(
+    { id: user._id, email: user.email },
+    process.env.JWT_SECRET,
+    { expiresIn: '1h' }
+  );
 
-  // Store JWT in cookie for protected routes
   res.cookie('jwt', token, { httpOnly: true, secure: false });
   res.status(200).json({ message: 'Login successful', token });
 });
@@ -49,7 +50,6 @@ router.get(
   '/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
   (req, res) => {
-    // Create JWT after successful Google login
     const token = jwt.sign(
       { id: req.user._id, email: req.user.email },
       process.env.JWT_SECRET,
@@ -57,7 +57,7 @@ router.get(
     );
 
     res.cookie('jwt', token, { httpOnly: true, secure: false });
-    res.redirect('/api-docs'); // redirect after login
+    res.redirect('/api-docs');
   }
 );
 
@@ -70,4 +70,3 @@ router.get('/logout', (req, res) => {
 });
 
 module.exports = router;
-
