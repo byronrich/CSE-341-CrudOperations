@@ -3,7 +3,7 @@
   "info": {
     "title": "CrudOperations API",
     "version": "1.0.0",
-    "description": "API documentation for Pets, Owners, Veggies, and Fruits CRUD operations."
+    "description": "API documentation for Pets, Owners, Veggies, and Fruits CRUD operations with OAuth security."
   },
   "servers": [
     {
@@ -12,6 +12,87 @@
     }
   ],
   "paths": {
+
+    "/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Register a new user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "User registered" },
+          "400": { "description": "User already exists" }
+        }
+      }
+    },
+
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Log in and receive a JWT token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Login successful, token returned" },
+          "401": { "description": "Invalid credentials" }
+        }
+      }
+    },
+
+    "/auth/logout": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Log out the current user",
+        "responses": {
+          "200": { "description": "Logged out" }
+        }
+      }
+    },
+
+    "/auth/google": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Begin Google OAuth login",
+        "responses": {
+          "302": { "description": "Redirect to Google OAuth" }
+        }
+      }
+    },
+
+    "/auth/google/callback": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Google OAuth callback",
+        "responses": {
+          "302": { "description": "Redirect after Google login" }
+        }
+      }
+    },
+
     "/pets": {
       "get": {
         "tags": ["Pets"],
@@ -23,6 +104,7 @@
       "post": {
         "tags": ["Pets"],
         "summary": "Create a new pet",
+        "security": [{ "BearerAuth": [] }],
         "requestBody": {
           "required": true,
           "content": {
@@ -53,6 +135,7 @@
       "put": {
         "tags": ["Pets"],
         "summary": "Update a pet",
+        "security": [{ "BearerAuth": [] }],
         "parameters": [
           { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
         ],
@@ -72,6 +155,7 @@
       "delete": {
         "tags": ["Pets"],
         "summary": "Delete a pet",
+        "security": [{ "BearerAuth": [] }],
         "parameters": [
           { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
         ],
@@ -93,6 +177,7 @@
       "post": {
         "tags": ["Owners"],
         "summary": "Create a new owner",
+        "security": [{ "BearerAuth": [] }],
         "requestBody": {
           "required": true,
           "content": {
@@ -123,6 +208,7 @@
       "put": {
         "tags": ["Owners"],
         "summary": "Update an owner",
+        "security": [{ "BearerAuth": [] }],
         "parameters": [
           { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
         ],
@@ -142,6 +228,7 @@
       "delete": {
         "tags": ["Owners"],
         "summary": "Delete an owner",
+        "security": [{ "BearerAuth": [] }],
         "parameters": [
           { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
         ],
@@ -163,6 +250,7 @@
       "post": {
         "tags": ["Veggies"],
         "summary": "Create a new veggie",
+        "security": [{ "BearerAuth": [] }],
         "requestBody": {
           "required": true,
           "content": {
@@ -193,6 +281,7 @@
       "put": {
         "tags": ["Veggies"],
         "summary": "Update a veggie",
+        "security": [{ "BearerAuth": [] }],
         "parameters": [
           { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
         ],
@@ -212,6 +301,7 @@
       "delete": {
         "tags": ["Veggies"],
         "summary": "Delete a veggie",
+        "security": [{ "BearerAuth": [] }],
         "parameters": [
           { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
         ],
@@ -233,6 +323,7 @@
       "post": {
         "tags": ["Fruits"],
         "summary": "Create a new fruit",
+        "security": [{ "BearerAuth": [] }],
         "requestBody": {
           "required": true,
           "content": {
@@ -263,6 +354,7 @@
       "put": {
         "tags": ["Fruits"],
         "summary": "Update a fruit",
+        "security": [{ "BearerAuth": [] }],
         "parameters": [
           { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
         ],
@@ -282,6 +374,7 @@
       "delete": {
         "tags": ["Fruits"],
         "summary": "Delete a fruit",
+        "security": [{ "BearerAuth": [] }],
         "parameters": [
           { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
         ],
@@ -294,6 +387,14 @@
   },
 
   "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+
     "schemas": {
       "Pet": {
         "type": "object",
